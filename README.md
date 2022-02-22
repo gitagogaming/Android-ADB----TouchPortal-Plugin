@@ -28,7 +28,7 @@ A plugin designed to help control android devices on your network and connected 
 **Plugin States**
 | State |  Description | 
 | ------------- | ------------- 
-| Android Version  | Swipe Start - End |
+| Android Version  | |
 | Battery Health |  |
 | Battery Temp | |
 | Battery Status |  |
