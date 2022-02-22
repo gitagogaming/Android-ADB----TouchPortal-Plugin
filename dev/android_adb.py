@@ -227,6 +227,7 @@ def connect():
         
     count = 0
     a={}
+ 
 
   # for x in devices:
   #     key = f"device{count}"
@@ -250,7 +251,8 @@ def connect():
 
 
 if __name__ == '__main__':
-   device, client =  connect()
+    device, client =  connect()
+
 
 
 
