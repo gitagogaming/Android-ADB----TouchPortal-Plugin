@@ -84,7 +84,7 @@
                     "label": "Pick a command",
                     "default": "",
                     "valueChoices":["Open Call Button","Menu Button", "Close Call Button", "Back Button", "Home Button", 
-                                    "Contacts", "Browser", "Camera", "Voice Assistant", "Calendar", "Toggle Power Menu"]
+                                    "Contacts", "Browser", "Camera", "Voice Assistant", "Calendar", "Toggle Power Menu", "Reboot Device"]
                   }
                 ]
               },
@@ -131,24 +131,28 @@
                     "id": "Gitago-ADB.TP.Plugins.device.command.swipeunlock.x1",
                     "type": "number",
                     "label": "Numbers",
+                    "allowDecimals": false, 
                     "default": "300"
                   },
                   {
                     "id": "Gitago-ADB.TP.Plugins.device.command.swipeunlock.x2",
                     "type": "number",
                     "label": "Numbers",
+                    "allowDecimals": false, 
                     "default": "1000"
                   },
                   {
                     "id": "Gitago-ADB.TP.Plugins.device.command.swipeunlock.y1",
                     "type": "number",
                     "label": "Numbers",
+                    "allowDecimals": false, 
                     "default": "300"
                   },
                   {
                     "id": "Gitago-ADB.TP.Plugins.device.command.swipeunlock.y2",
                     "type": "number",
                     "label": "Numbers",
+                    "allowDecimals": false, 
                     "default": "500"
                   }
                 ]
@@ -184,8 +188,8 @@
                 "prefix": "plugin",
                 "type": "communicate",
                 "tryInline": true,
-                "description": "Screenshot Device and Save Image",
-                "format": "Screenshot {$Gitago-ADB.TP.Plugins.device_select$} and save as {$Gitago-ADB.TP.Plugins.device.screenshot_filename$} ",
+                "description": "Screenshot Device and Save Image (File will default to PNG)",
+                "format": "Screenshot {$Gitago-ADB.TP.Plugins.device_select$} and save as {$Gitago-ADB.TP.Plugins.device.screenshot_filename$} and save it locally to {$Gitago-ADB.TP.Plugins.device.screenshot_save_directory$}",
                 "data": [
                     {
                       "id": "Gitago-ADB.TP.Plugins.device_select",
@@ -196,6 +200,11 @@
                 {
                     "id": "Gitago-ADB.TP.Plugins.device.screenshot_filename",
                     "type": "text",
+                    "label": "text"
+                },
+                {
+                    "id": "Gitago-ADB.TP.Plugins.device.screenshot_save_directory",
+                    "type": "folder",
                     "label": "text",
                     "default": ""
                 }
