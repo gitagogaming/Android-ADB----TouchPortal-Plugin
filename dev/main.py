@@ -39,11 +39,13 @@ def get_screen_info(device_choice)-> dict:
     android_version = device_choice.shell('getprop ro.build.version.release').split("\n")[0]
     return {"Version": android_version, "Hardware": hardware, "Board": board, "Manufacturer": manufac.capitalize(), "Model": model, "Screen Size": size, "Screen Density":density}
     
-
+battery_states2={}
 """            GETTING BATTERY INFO / SAVING TO DICT                """
-def battery_state_update(device, format = "Celcius")-> dict:
+def battery_state_update(device, format = "Celcius"):
     """ Returns Dictionary with Full Battery Details """
     #global battery_states
+    
+    
     ok=(device.shell('dumpsys battery'))
     buf = StringIO(ok)
     changes = 0
@@ -80,7 +82,8 @@ def battery_state_update(device, format = "Celcius")-> dict:
         print("---- {} changes".format(changes))
        # print(battery_states)
         pass
-        
+    from pprint import pprint
+    pprint (battery_states)   
     return battery_states
 
 
@@ -90,12 +93,18 @@ def create_states():
     count2=1
     
     for adict in device_list:
-       # battery_info= get_battery_level_and_temperature(adict['Device'], format = "Celcius")
+        sleep = check_sleep(adict['Device'])
+        if sleep:
+            TPClient.stateUpdate(stateId=f'Gitago-ADB.TP.Plugins.device.{adict["Model"]}.sleep_state', stateValue=sleep['mHoldingWakeLockSuspendBlocker'])
+        if not sleep:
+            pass
+
+        ### Pulling Device Details 
         battery_info = battery_state_update(adict['Device'])
         mem_info = get_mem_info(adict['Device'])
         
         
-        """ THIS SHOULD PULL FROM PLUGIN SETTINGS TO DECIDE IF C OR F"""
+        #THIS SHOULD PULL FROM PLUGIN SETTINGS TO DECIDE IF C OR F"""
         aformat="Fahrenheit"
         temp = float(battery_info['temperature']) /10.0  
 
@@ -103,95 +112,102 @@ def create_states():
             temp_formatted = f"{float(battery_info['temperature']) /10.0} °C"
         elif aformat == "Fahrenheit":
             temp_formatted = f'{(temp * 9/5) + 32} °F'
-    
-        
+
+        print(adict['Model'])
+        print("-"*30)
+
         TPClient.createStateMany([
         {
-        "id": f'Gitago-ADB.TP.Plugins.device{count2}.Version',
+        "id": f'Gitago-ADB.TP.Plugins.device{adict["Model"]}.Version',
         "desc": f"{adict['Model']} Android Version",
         "value": str(adict['Version'])
         },
         {
-        "id": f'Gitago-ADB.TP.Plugins.device{count2}.Hardware',
+        "id": f'Gitago-ADB.TP.Plugins.device.{adict["Model"]}.Hardware',
         "desc": f"{adict['Model']} Hardware ",
         "value": str(adict['Hardware'])
         },
             {
-        "id": f'Gitago-ADB.TP.Plugins.device{count2}.Manufacturer',
+        "id": f'Gitago-ADB.TP.Plugins.device.{adict["Model"]}.Manufacturer',
         "desc": f"{adict['Model']} Manufacturer",
         "value": str(adict['Manufacturer'])
         },
         {
-        "id": f'Gitago-ADB.TP.Plugins.device{count2}.Model',
+        "id": f'Gitago-ADB.TP.Plugins.device.{adict["Model"]}.Model',
         "desc": f"{adict['Model']} Model",
         "value": f"{adict['Model']}"
         },
         {
-        "id": f'Gitago-ADB.TP.Plugins.device{count2}.ScreenSize',
+        "id": f'Gitago-ADB.TP.Plugins.device.{adict["Model"]}.ScreenSize',
         "desc": f"{adict['Model']} Screen Size",
         "value": str(adict['Screen Size'])
         },
         {
-        "id": f'Gitago-ADB.TP.Plugins.device{count2}.BatteryStatus',
+        "id": f'Gitago-ADB.TP.Plugins.device.{adict["Model"]}.BatteryStatus',
         "desc": f"{adict['Model']} Battery Status",
         "value": str(battery_info['status'])
         },
         {
-        "id": f'Gitago-ADB.TP.Plugins.device{count2}.BatteryLevel',
+        "id": f'Gitago-ADB.TP.Plugins.device.{adict["Model"]}.BatteryLevel',
         "desc": f"{adict['Model']} Battery Level",
         "value": str(battery_info['level'])
         },
         {
-        "id": f'Gitago-ADB.TP.Plugins.device{count2}.BatteryTemperature',
+        "id": f'Gitago-ADB.TP.Plugins.device.{adict["Model"]}.BatteryTemperature',
         "desc": f"{adict['Model']} Battery Temperature",
         "value": str(temp_formatted)
         },
         {
-        "id": f'Gitago-ADB.TP.Plugins.device{count2}.BatteryVoltage',
+        "id": f'Gitago-ADB.TP.Plugins.device.{adict["Model"]}.BatteryVoltage',
         "desc": f"{adict['Model']} Battery Voltage",
         "value": str(battery_info['voltage']+" mV")
         },
         {
-        "id": f'Gitago-ADB.TP.Plugins.device{count2}.BatteryHealth',
+        "id": f'Gitago-ADB.TP.Plugins.device.{adict["Model"]}.BatteryHealth',
         "desc": f"{adict['Model']} Battery Health",
         "value": bat_state_conver(choice='health',num=int(battery_info['health']))
         },
         {
-        "id": f'Gitago-ADB.TP.Plugins.device{count2}.MemoryTotal',
+        "id": f'Gitago-ADB.TP.Plugins.device.{adict["Model"]}.MemoryTotal',
         "desc": f"{adict['Model']} Memory Total",
         "value": str(mem_info['MemTotal'])
         },
         {
-        "id": f'Gitago-ADB.TP.Plugins.device{count2}.MemoryAvailable',
+        "id": f'Gitago-ADB.TP.Plugins.device.{adict["Model"]}.MemoryAvailable',
         "desc": f"{adict['Model']} Memory Available",
         "value": f"{str(mem_info['MemAvailable'])} {mem_info['MemAvailable']} // {mem_info['MemTotal']} "
-        }, 
+        },
+    #    {
+    #    "id": f'Gitago-ADB.TP.Plugins.device{count2}.sleep_state',
+    #    "desc": f"{adict['Model']} Sleep State",
+    #    "value": ""
+    #    }
         ])
+
+
         count2 = count2+1
     
+
+def state_loop_update():
+    while True:
+        create_states()
+        
+        print("Looped it...")
+        time.sleep(15)
 
 
 ### Swipe to Unlock
 def swipe_to_unlock(device, x1=None, x2=None, y1= None, y2=None):
-    """ Basic Swipe to Unlock"""
-    "Turn on screen"
     try:
-        #device.shell('input keyevent 224')
-       # time.sleep(0.2)
         "swipe to unlock"
         device.shell(f'input swipe {x1} {x2} {y1} {y2}')
     except:
         print("error swiping")
-   # device.shell("input keyevent 15")
-   # device.shell("input keyevent 13")
-   # device.shell("input keyevent 15")
-   # device.shell("input keyevent 14")
 
 
 
 def get_mem_info(device)-> dict:
     """ Returns Dictionary with Memory Details"""
-    mem_list = ['MemTotal', 'MemAvailable']
     mem_check = device.shell("cat /proc/meminfo")
     split = mem_check.splitlines(-1)
     memdict ={}
@@ -243,7 +259,8 @@ def adjust_brightness(device, level):
 
 
 """ Formatting + Dictionary """
-def check_sleep():
+def check_sleep(device):
+  #  for dict in device_list:
     ok=(device.shell('dumpsys power | grep mHolding'))
     buf = StringIO(ok)
     changes = 0
@@ -254,7 +271,7 @@ def check_sleep():
             if m:
                 if value != m.group(1):
                     changes += 1
-                    print("changed: state={} old={} new={}".format(state, value, m.group(1)))
+                    print("SLEEP STATE CHANGED: state={} old={} new={}".format(state, value, m.group(1)))
                     sleep_states[state] = m.group(1)
         if changes > 0:
             print("---- {} changes".format(changes))
@@ -320,7 +337,7 @@ def handleSettings(settings, on_connect=False):
     old_devices = choice_list
     
     """ Creating States for Connected Devices"""
-    create_states()
+   # create_states()
 
 
 #_________________ ON CONNECT _______________#
@@ -333,8 +350,8 @@ def onConnect(data):
     if settings := data.get('settings'):
         handleSettings(settings, True)
         
-    #th = threading.Thread(target=battery_state_update, daemon=True)
-    #th.start()
+    th = threading.Thread(target=state_loop_update, daemon=True)
+    th.start()
 
 
 #__________ON SETTINGS UPDATE ___________#
@@ -372,7 +389,7 @@ def heldingButton(data):
             elif data['data'][1]['value'] == "Up":
                 match_device(data['data'][0]['value'])['Device'].shell('input keyevent 221')
                 time.sleep(0.2)
-                
+        
         else:
             break
 
@@ -402,7 +419,12 @@ def onAction(data):
         if data['data'][1]['value'] == "Contacts":
             match_device(data['data'][0]['value'])['Device'].shell('input keyevent 207')
         if data['data'][1]['value'] == "Open Call Button":
-            match_device(data['data'][0]['value'])['Device'].shell('input keyevent 5')
+          #  match_device(data['data'][0]['value'])['Device'].shell('input keyevent 5')
+            print("MEH")
+           # print(match_device(data['data'][0]['value'])['Device'].shell('top -n 1'))
+           # print(match_device(data['data'][0]['value'])['Device'].shell("watch -n 0.5 adb shell top -n 1"))
+            print(match_device(data['data'][0]['value'])['Device'].shell("top -m 10 | FINDSTR rils"))
+            
         if data['data'][1]['value'] == "Close Call Button":
             match_device(data['data'][0]['value'])['Device'].shell('input keyevent 6')
         if data['data'][1]['value'] == "Back Button":
@@ -423,6 +445,10 @@ def onAction(data):
             match_device(data['data'][0]['value'])['Device'].shell('input keyevent 208')
         if data['data'][1]['value'] == "Menu Button":
             match_device(data['data'][0]['value'])['Device'].shell('input keyevent 82')
+        if data['data'][1]['value'] == "Reboot Device":
+            match_device(data['data'][0]['value'])['Device'].shell('reboot')
+      # if data['data'][1]['value'] == "Switch Application":
+      #     match_device(data['data'][0]['value'])['Device'].shell('reboot')
             
     if data['actionId'] == "Gitago-ADB.TP.Plugins.device_swipeunlock":
         swipe_to_unlock(device=match_device(data['data'][0]['value'])['Device'], x1=data['data'][1]['value'], x2=data['data'][2]['value'], y1=data['data'][3]['value'], y2=data['data'][4]['value'])
@@ -446,11 +472,13 @@ def onAction(data):
 
     if data['actionId'] == "Gitago-ADB.TP.Plugins.device.screenshot":
         filename = data['data'][1]['value']
-        """ Screenshot Device"""
-        print(match_device(data['data'][0]['value'])['Device'].shell(f'screencap -p /sdcard/{filename}'))
-        
-        """ Pull Screenshot to PC"""
-        print(match_device(data['data'][0]['value'])['Device'].pull(f"/sdcard/{filename}", f"C:/Users/dbcoo/Downloads/tmp/{filename}"))
+        save_directory = data['data'][2]['value']
+        if filename.endswith(".png") or filename.endswith(".jpg"):
+            """ Screenshot Device"""
+            match_device(data['data'][0]['value'])['Device'].shell(f'screencap -p /sdcard/{filename}')
+            if save_directory:
+                """ Pull Screenshot to PC"""
+                match_device(data['data'][0]['value'])['Device'].pull(f"/sdcard/{filename}", f"{save_directory}/{filename}")
 
     
     if not (action_data := data.get('data')) or not (aid := data.get('actionId')):
