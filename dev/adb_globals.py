@@ -1,5 +1,8 @@
 
-from android_adb import *
+#from android_adb import *
+from asyncio.windows_events import NULL
+from concurrent.futures import thread
+from ppadb.client import Client as AdbClient
 from io import StringIO
 import sys
 import TouchPortalAPI as TP
@@ -10,7 +13,6 @@ from concurrent.futures import thread
 import time
 import re
 import threading 
-#from ppadb.client import Client as AdbClient
 import adb_commadns
 from argparse import ArgumentParser
 from logging import (getLogger, Formatter, NullHandler, FileHandler, StreamHandler, DEBUG, INFO, WARNING)
@@ -31,6 +33,8 @@ battery_states = {
 "USB powered": "",
 "Wireless powered":"",
 "present": ""}
+
+
 
 
 sleep_states = {
