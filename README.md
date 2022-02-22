@@ -22,3 +22,20 @@ A plugin designed to help control android devices on your network and connected 
 | Brightness +/-  |  Slider / Press   | None       |
 | Refresh Connection  |     | None       |
 | Create Remote Connection  | IP + Port Required    | None       |
+
+
+---
+**Plugin States**
+| State |  Description | 
+| ------------- | ------------- 
+| Android Version  | Swipe Start - End |
+| Battery Health |  |
+| Battery Temp | |
+| Battery Status |  |
+| Battery Voltage |  |
+| Model |  |
+| Manufacturer |  |
+| Memory Availagle |  |
+| Device Memory Total |  |
+| Sleep State |  |
+| Screen Size |  |
