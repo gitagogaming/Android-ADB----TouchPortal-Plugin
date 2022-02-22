@@ -1,7 +1,8 @@
 # Android-ADB----TouchPortal-Plugin
 A plugin designed to help control android devices on your network and connected to your PC in order to automate.
 
-If you have any suggestions or concerns please feel free to bring them up via issues and or the TouchPortal Discord.
+Got a suggestions or concern?
+Please feel free to bring them up via issues and or the TouchPortal Discord.
 ---
 
 **Select Device -> Do Action**
