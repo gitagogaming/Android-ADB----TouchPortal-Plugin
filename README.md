@@ -9,9 +9,17 @@ Please feel free to bring them up via issues and or the TouchPortal Discord.
 | Action |  Description | Value
 | ------------- | ------------- | ------------- |
 | Swipe to Unlock  | Swipe Start - End  | None  |
-| Open / Close Call | Press *  | None       |
-| Menu Button | Press *  | None      |
-| Home Button | Press *  | None       |
+| Text Input | Enter Text into potential fields  | None       |
+| Tap Input | X and Y coordinates  | None       |
+| Swipe Input |   | None       |
+| Open / Close Call |        | None       |
+| Dial Numbers |     | None       |
+| Menu Button |       | None      |
+| Home Button |       | None       |
+| Enter Button |   | None       |
+| Delete Button |   | None       |
+| Back Button |        | None       |
+| Open Browser |   | None       |
 | Camera | Open *  | None      |
 | Contacts | Open *   | None       |
 | Calendar | Open *   | None       |
