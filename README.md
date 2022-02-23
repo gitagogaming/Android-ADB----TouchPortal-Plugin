@@ -51,7 +51,7 @@ Please feel free to bring them up via issues and or the TouchPortal Discord.
 | Battery Voltage |  |
 | Model |  |
 | Manufacturer |  |
-| Memory Availagle |  |
+| Memory Available |  |
 | Device Memory Total |  |
 | Sleep State |  |
 | Screen Size |  |
