@@ -8,6 +8,7 @@ Please feel free to bring them up via issues and or the TouchPortal Discord.
 **Select Device -> Do Action**
 | Action |  Description | Value
 | ------------- | ------------- | ------------- |
+| Open Application  | Open *  | None  |
 | Swipe to Unlock  | Swipe Start - End  | None  |
 | Text Input | Enter Text into potential fields  | None       |
 | Tap Input | X and Y coordinates  | None       |
