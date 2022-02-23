@@ -42,6 +42,9 @@ Please feel free to bring them up via issues and or the TouchPortal Discord.
 | State |  Description | 
 | ------------- | ------------- 
 | Android Version  | |
+| CPU Usage  | |
+| Current App Open  | |
+| Last 5 Apps Opened  | |
 | Battery Health |  |
 | Battery Temp | |
 | Battery Status |  |
