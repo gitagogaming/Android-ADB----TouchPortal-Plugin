@@ -19,7 +19,7 @@ Please feel free to bring them up via issues and or the TouchPortal Discord.
 | Enter Button |   | None       |
 | Delete Button |   | None       |
 | Back Button |        | None       |
-| Open Browser |   | None       |
+| Open Browser | Open *   | None       |
 | Camera | Open *  | None      |
 | Contacts | Open *   | None       |
 | Calendar | Open *   | None       |
