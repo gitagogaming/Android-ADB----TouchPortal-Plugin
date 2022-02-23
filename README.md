@@ -11,14 +11,14 @@ Please feel free to bring them up via issues and or the TouchPortal Discord.
 | Swipe to Unlock  | Swipe Start - End  | None  |
 | Text Input | Enter Text into potential fields  | None       |
 | Tap Input | X and Y coordinates  | None       |
-| Swipe Input |   | None       |
-| Open / Close Call |        | None       |
-| Dial Numbers |     | None       |
-| Menu Button |       | None      |
-| Home Button |       | None       |
-| Enter Button |   | None       |
-| Delete Button |   | None       |
-| Back Button |        | None       |
+| Swipe Input | Swipe X1 Y1 X2 Y2  | None       |
+| Open / Close Call |  Open *      | None       |
+| Dial Numbers | Input Numbers    | None       |
+| Menu Button |  Press *     | None      |
+| Home Button |  Press *     | None       |
+| Enter Button | Press *  | None       |
+| Delete Button |  Press *  | None       |
+| Back Button |    Press *     | None       |
 | Open Browser | Open *   | None       |
 | Camera | Open *  | None      |
 | Contacts | Open *   | None       |
