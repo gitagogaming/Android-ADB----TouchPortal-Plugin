@@ -9,6 +9,7 @@ Please feel free to bring them up via issues and or the TouchPortal Discord.
 | Action |  Description | Value
 | ------------- | ------------- | ------------- |
 | Open Application  | Open *  | None  |
+| Close Application  | Close *  | None  |
 | Swipe to Unlock  | Swipe Start - End  | None  |
 | Text Input | Enter Text into potential fields  | None       |
 | Tap Input | X and Y coordinates  | None       |
