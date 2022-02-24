@@ -55,3 +55,10 @@ Please feel free to bring them up via issues and or the TouchPortal Discord.
 | Device Memory Total |  |
 | Sleep State |  |
 | Screen Size |  |
+
+
+
+
+---------------------------------------
+![image](https://user-images.githubusercontent.com/76603653/155468451-8c5f847a-9d11-49cb-88d3-69d264d946f6.png)
+
