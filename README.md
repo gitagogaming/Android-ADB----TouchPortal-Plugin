@@ -43,12 +43,15 @@ Please feel free to bring them up via issues and or the TouchPortal Discord.
 | ------------- | ------------- 
 | Android Version  | |
 | CPU Usage  | |
-| Current App Open  | |
-| Last 5 Apps Opened  | |
+| Mem Usage  | |
+| Sleep State  | |
+| Battery Percentage |  |
 | Battery Health |  |
 | Battery Temp | |
 | Battery Status |  |
 | Battery Voltage |  |
+| Current App Open  | |
+| Last 5 Apps Opened  | |
 | Model |  |
 | Manufacturer |  |
 | Memory Available |  |
