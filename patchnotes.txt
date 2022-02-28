@@ -1,2 +1,2 @@
-- Fixed Volume Slider for Android Versions 6-12
-- Added in Actions for Install APK and Uninstall APK
+- FIXED: Volume Slider for Android Versions 6-12
+- NEW ACTIONS: Install APK and Uninstall APK
