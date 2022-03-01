@@ -1,5 +1,6 @@
 FIXED: 
-Volume Slider for Android Versions 6-12
+  -Volume Slider for Android Versions 6-12
+  -App List Choice List Updating
 NEW ACTIONS:
   -Install APK 
   -Uninstall APK
