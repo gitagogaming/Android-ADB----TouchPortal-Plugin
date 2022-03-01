@@ -1,5 +1,8 @@
-FIXED: Volume Slider for Android Versions 6-12
+FIXED: 
+Volume Slider for Android Versions 6-12
 NEW ACTIONS:
   -Install APK 
   -Uninstall APK
   -Logcat to File
+ 
+NOTE: Update Now Button is broken until after update...
