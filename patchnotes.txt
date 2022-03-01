@@ -1,2 +1,5 @@
-- FIXED: Volume Slider for Android Versions 6-12
-- NEW ACTIONS: Install APK and Uninstall APK
+FIXED: Volume Slider for Android Versions 6-12
+NEW ACTIONS:
+  -Install APK 
+  -Uninstall APK
+  -Logcat to File
