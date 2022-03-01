@@ -16,6 +16,9 @@ Please feel free to bring them up via issues and or the TouchPortal Discord.
 | Swipe Input | Swipe X1 Y1 X2 Y2 
 | Open / Close Call |  Open *     
 | Dial Numbers | Input Numbers    
+| Install APK | Install APK from PC   
+| Uninstall APK | Uninstall APK 
+| Device Logcat | Start / Stop / Clear Logcat to File 
 | Menu Button |  Press *     
 | Home Button |  Press *     
 | Enter Button | Press *  
