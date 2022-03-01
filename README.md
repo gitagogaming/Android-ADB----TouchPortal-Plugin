@@ -61,6 +61,7 @@ Please feel free to bring them up via issues and or the TouchPortal Discord.
 | Device Memory Total |  |
 | Sleep State |  |
 | Screen Size |  |
+| APK Install/Uninstall Results |  |
 
 
 
