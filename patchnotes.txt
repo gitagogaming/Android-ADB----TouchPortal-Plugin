@@ -1,9 +1,7 @@
-FIXED: 
-  -Volume Slider for Android Versions 6-12
-  -App List Choice List Updating
-NEW ACTIONS:
-  -Install APK 
-  -Uninstall APK
-  -Logcat to File
- 
-NOTE: Update Now Button is broken until after update...
+Added in KeyInput function - This will allow users to use ANY android keyinput event that may be available to their device.
+
+Added Parent Groups for devices - This will make managing your device states much easier
+Removed MemAvail - It does not appear to be that useful and is specific to an application
+Added MemFree
+
+Several under the hood improvements as far as code efficiency
