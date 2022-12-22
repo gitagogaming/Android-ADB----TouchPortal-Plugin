@@ -40,7 +40,8 @@ Please feel free to bring them up via issues and or the TouchPortal Discord.
 | Volume +/-  |  Slider / Press   
 | Brightness +/-  |  Slider / Press   
 | Refresh Connection  |     | None       
-| Create Remote Connection  | IP + Port Required    
+| Create Remote Connection  | IP + Port Required
+| Key Input  | DeviceName + KeyInput Code    
 
 
 ---
