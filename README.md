@@ -1,4 +1,7 @@
 # Android-ADB----TouchPortal-Plugin
+![image](https://user-images.githubusercontent.com/76603653/209237634-dbe486c4-1bf1-4bbe-bcf8-fc19c3dbb05f.png)
+
+
 A plugin designed to help control android devices on your network and connected to your PC in order to automate.
 
 Got a suggestions or concern?
