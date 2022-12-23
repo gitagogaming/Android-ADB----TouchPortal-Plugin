@@ -1,0 +1,2 @@
+pure-python-adb==0.3.0.dev0
+TouchPortal-API==1.7.7
