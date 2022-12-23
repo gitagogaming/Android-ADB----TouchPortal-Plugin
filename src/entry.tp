@@ -1,0 +1,589 @@
+{
+    "sdk": 6,
+    "version": 112,
+    "name": "Android ADB",
+    "id": "Gitago-ADB",
+    "configuration": {
+      "colorDark": "#6c6f73",
+      "colorLight": "#3d62ad"
+    },
+    "plugin_start_cmd": "%TP_PLUGIN_FOLDER%Android\\adb-android-tp-plugin.exe",
+    "categories": [
+      {
+        "id": "main",
+        "name": "Android ADB",
+        "imagepath": "%TP_PLUGIN_FOLDER%Android\\androidadb.png",
+        "connectors": [
+          {       
+            "id": "Gitago-ADB.TP.Plugins.VolumeMixer.connectors",
+            "name": "Device Volume Slider",
+            "format": "Control volume for {$Gitago-ADB.TP.Plugins.device_select$}  Speaker: {$Gitago-ADB.TP.Plugins.device_select.speaker$}",
+            "data": [
+              {
+                "id": "Gitago-ADB.TP.Plugins.device_select",
+                "type": "choice",
+                "label": "choice",
+                "default": "",
+                "valueChoices": []
+              },
+              {
+                "id": "Gitago-ADB.TP.Plugins.device_select.speaker",
+                "type": "choice",
+                "label": "choice",
+                "default": "",
+                "valueChoices": ["Phone", "Speaker", "Notification", "Alarm", "Bluetooth"]
+              }
+            ]
+          },
+          {
+            "id": "Gitago-ADB.TP.Plugins.device.brightness.slider",
+            "name": "Device Brightness Slider",
+            "format": "Adjust Brightness: {$Gitago-ADB.TP.Plugins.device_select$}",
+            "data": [
+              {
+                "id": "Gitago-ADB.TP.Plugins.device_select",
+                "type": "choice",
+                "label": "choice",
+                "default": "",
+                "valueChoices": []
+              }
+            ]
+          }
+        ],
+        "actions": [
+            {
+                "id": "Gitago-ADB.TP.Plugins.device_commands",
+                "name": "ANDROID: Commands n Such",
+                "prefix": "plugin",
+                "type": "communicate",
+                "description": "Select Device -> Execute Command",
+                "tryInline": true,
+                "format": "Select {$Gitago-ADB.TP.Plugins.device_select$}     Command:{$Gitago-ADB.TP.Plugins.device.command$}",
+                "data": [
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device_select",
+                    "type": "choice",
+                    "label": "Device Selection",
+                    "valueChoices":[]
+                  },  
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.command",
+                    "type": "choice",
+                    "label": "Pick a command",
+                    "default": "",
+                    "valueChoices":["Open Call Button","Menu Button", "Close Call Button", "Back Button", "Home Button", 
+                                    "Contacts", "Browser", "Voice Assistant", "Calendar", "Toggle Power Menu", "Reboot Device", "Delete / Backspace", "Enter"]    
+                  }
+                ]
+              },
+              {
+                "id": "Gitago-ADB.TP.Plugins.device.commands_camera",
+                "name": "ANDROID: Camera Commands",
+                "prefix": "plugin",
+                "type": "communicate",
+                "description": "Open / Focus and Take Photo on selected device",
+                "tryInline": true,
+                "format": "Select {$Gitago-ADB.TP.Plugins.device_select$}     Command:{$Gitago-ADB.TP.Plugins.device.camera_command$}",
+                "data": [
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device_select",
+                    "type": "choice",
+                    "label": "Device Selection",
+                    "valueChoices":[]
+                  },  
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.camera_command",
+                    "type": "choice",
+                    "label": "Pick a command",
+                    "default": "",
+                    "valueChoices":["Open Camera","Focus Camera", "Take Photo"]
+                  }
+                ]
+              },
+              {
+                "id": "Gitago-ADB.TP.Plugins.device.open_application",
+                "name": "ANDROID: Open Application",
+                "prefix": "plugin",
+                "type": "communicate",
+                "description": "Open an Application",
+                "tryInline": true,
+                "format": "Select {$Gitago-ADB.TP.Plugins.device_select$}  and{$Gitago-ADB.TP.Plugins.device.app_list.open_close$}  App:{$Gitago-ADB.TP.Plugins.device.app_list$}",
+                "data": [
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device_select",
+                    "type": "choice",
+                    "label": "Device Selection",
+                    "valueChoices":[]
+                  },  
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.app_list",
+                    "type": "choice",
+                    "label": "Pick an App",
+                    "default": "",
+                    "valueChoices":[]
+                  },
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.app_list.open_close",
+                    "type": "choice",
+                    "label": "Pick an App",
+                    "default": "",
+                    "valueChoices":["Open", "Close"]
+                  }
+                ]
+              },
+
+              {
+                "id": "Gitago-ADB.TP.Plugins.device.commands.text_input",
+                "name": "ANDROID: Input Text on Device",
+                "prefix": "plugin",
+                "type": "communicate",
+                "description": "Select Device -> Input Text",
+                "tryInline": true,
+                "format": "Select {$Gitago-ADB.TP.Plugins.device_select$}     Text:{$Gitago-ADB.TP.Plugins.device.text_input$}",
+                "data": [
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device_select",
+                    "type": "choice",
+                    "label": "Device Selection",
+                    "valueChoices":[]
+                  },  
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.text_input",
+                    "type": "text",
+                    "label": "text input",
+                    "default": ""
+                  }
+                ]
+              },
+
+              {
+                "id": "Gitago-ADB.TP.Plugins.device.commands.tap_input",
+                "name": "ANDROID: Touch Input (X, Y)",
+                "prefix": "plugin",
+                "type": "communicate",
+                "description": "Select Device -> Touch X, Y",
+                "tryInline": true,
+                "format": "Select {$Gitago-ADB.TP.Plugins.device_select$}  X:{$Gitago-ADB.TP.Plugins.device.tap_input_X$}    Y:{$Gitago-ADB.TP.Plugins.device.tap_input_Y$}",
+                "data": [
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device_select",
+                    "type": "choice",
+                    "label": "Device Selection",
+                    "valueChoices":[]
+                  },  
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.tap_input_X",
+                    "type": "text",
+                    "label": "text input",
+                    "default": ""
+                  },
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.tap_input_Y",
+                    "type": "text",
+                    "label": "text input",
+                    "default": ""
+                  }
+                ]
+              },
+
+              {
+                "id": "Gitago-ADB.TP.Plugins.device_KEYINPUTS",
+                "name": "ANDROID: Press Number Key",
+                "prefix": "plugin",
+                "type": "communicate",
+                "description": "Select Device -> Press Number Keys",
+                "tryInline": true,
+                "format": "Select {$Gitago-ADB.TP.Plugins.device_select$}     Command:{$Gitago-ADB.TP.Plugins.device.command.keyinputs$}",
+                "data": [
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device_select",
+                    "type": "choice",
+                    "label": "Device Selection",
+                    "valueChoices":[]
+                  },  
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.command.keyinputs",
+                    "type": "choice",
+                    "label": "Numbers",
+                    "default": "",
+                    "valueChoices":["1","2","3","4","5","6","7","8","9","0"]
+                  }
+                ]
+              },
+              {
+                "id": "Gitago-ADB.TP.Plugins.device_swipeunlock",
+                "name": "ANDROID: Swipe to Unlock",
+                "prefix": "plugin",
+                "type": "communicate",
+                "description": "Select Device -> Swipe to Unlock     |     X1 and Y1 and Start Points   -   X2 and Y2 are End Points    ",
+                "tryInline": true,
+                "format": "Select {$Gitago-ADB.TP.Plugins.device_select$}  X1:{$Gitago-ADB.TP.Plugins.device.command.swipeunlock.x1$} Y1{$Gitago-ADB.TP.Plugins.device.command.swipeunlock.y1$} X2 {$Gitago-ADB.TP.Plugins.device.command.swipeunlock.x2$} Y2 {$Gitago-ADB.TP.Plugins.device.command.swipeunlock.y2$}",
+                "data": [
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device_select",
+                    "type": "choice",
+                    "label": "Device Selection",
+                    "valueChoices":[]
+                  },  
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.command.swipeunlock.x1",
+                    "type": "number",
+                    "label": "Numbers",
+                    "allowDecimals": false, 
+                    "default": "300"
+                  },
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.command.swipeunlock.x2",
+                    "type": "number",
+                    "label": "Numbers",
+                    "allowDecimals": false, 
+                    "default": "1000"
+                  },
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.command.swipeunlock.y1",
+                    "type": "number",
+                    "label": "Numbers",
+                    "allowDecimals": false, 
+                    "default": "300"
+                  },
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.command.swipeunlock.y2",
+                    "type": "number",
+                    "label": "Numbers",
+                    "allowDecimals": false, 
+                    "default": "500"
+                  }
+                ]
+              },
+
+              {
+                "id": "Gitago-ADB.TP.Plugins.device.togglemute",
+                "name": "ANDROID: Toggle Options",
+                "prefix": "plugin",
+                "type": "communicate",
+                "tryInline": true,
+                "description": "Toggle the Mute and or Power for Selected Device",
+                "format": "Toggle {$Gitago-ADB.TP.Plugins.device.toggle_choice$} for {$Gitago-ADB.TP.Plugins.device_select$}",
+                "data": [
+                    {
+                      "id": "Gitago-ADB.TP.Plugins.device_select",
+                      "type": "choice",
+                      "label": "Device Selection",
+                      "valueChoices":[]
+                },
+                {
+                    "id": "Gitago-ADB.TP.Plugins.device.toggle_choice",
+                    "type": "choice",
+                    "label": "Toggle Choice",
+                    "valueChoices":["Power", "Mute"]
+                }
+                ]
+              },
+
+              {
+                "id": "Gitago-ADB.TP.Plugins.device.screenshot",
+                "name": "ANDROID: Screenshot Device",
+                "prefix": "plugin",
+                "type": "communicate",
+                "tryInline": true,
+                "description": "Screenshot Device and Save Image (File will default to PNG)",
+                "format": "Screenshot {$Gitago-ADB.TP.Plugins.device_select$} and save as {$Gitago-ADB.TP.Plugins.device.screenshot_filename$} and save it locally to {$Gitago-ADB.TP.Plugins.device.screenshot_save_directory$}",
+                "data": [
+                    {
+                      "id": "Gitago-ADB.TP.Plugins.device_select",
+                      "type": "choice",
+                      "label": "Device Selection",
+                      "valueChoices":[]
+                },
+                {
+                    "id": "Gitago-ADB.TP.Plugins.device.screenshot_filename",
+                    "type": "text",
+                    "label": "text"
+                },
+                {
+                    "id": "Gitago-ADB.TP.Plugins.device.screenshot_save_directory",
+                    "type": "folder",
+                    "label": "text",
+                    "default": ""
+                }
+
+                ]
+              },
+              
+              {
+                "id": "Gitago-ADB.TP.Plugins.volume",
+                "name": "ANDROID: Volume Control",
+                "prefix": "plugin",
+                "type": "communicate",
+                "description": "Adjust Volume Selected Android Device",
+                "tryInline": true,
+                "hasHoldFunctionality": true,
+                "format": "Select {$Gitago-ADB.TP.Plugins.device_select$}  Volume {$Gitago-ADB.TP.Plugins.device.volume.updown$}",
+                "data": [
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device_select",
+                    "type": "choice",
+                    "label": "Device Selection",
+                    "valueChoices":[]
+                  },  
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.volume.updown",
+                    "type": "choice",
+                    "label": "Pick a command",
+                    "default": "",
+                    "valueChoices":["Up", "Down"]
+                  }
+                ]
+              },
+
+              {
+                "id": "Gitago-ADB.TP.Plugins.screenbrightness",
+                "name": "ANDROID: Brightness Control",
+                "prefix": "plugin",
+                "type": "communicate",
+                "description": "Adjust Screen Brightness",
+                "tryInline": true,
+                "hasHoldFunctionality": true,
+                "format": "Select {$Gitago-ADB.TP.Plugins.device_select$}  Brightness {$Gitago-ADB.TP.Plugins.device.brightness.updown$}",
+                "data": [
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device_select",
+                    "type": "choice",
+                    "label": "Device Selection",
+                    "valueChoices":[]
+                  },  
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.brightness.updown",
+                    "type": "choice",
+                    "label": "Pick a command",
+                    "default": "",
+                    "valueChoices":["Up", "Down"]
+                  }
+                ]
+              },
+              {
+                "id": "Gitago-ADB.TP.Plugins.device.display",
+                "name": "ANDROID: Display On / Off",
+                "prefix": "plugin",
+                "type": "communicate",
+                "description": "Turn Display On or Off for Selected Android Device",
+                "tryInline": true,
+                "format": "Select {$Gitago-ADB.TP.Plugins.device_select$}  Turn it {$Gitago-ADB.TP.Plugins.device.display.onoff$}",
+                "data": [
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device_select",
+                    "type": "choice",
+                    "label": "Device Selection",
+                    "valueChoices":[]
+                  },  
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device.display.onoff",
+                    "type": "choice",
+                    "label": "Pick a command",
+                    "default": "",
+                    "valueChoices":["On", "Off"]
+                  }
+                ]
+              },
+              {
+                "id": "Gitago-ADB.TP.Plugins.device.connectnew",
+                "name": "ANDROID: Refresh Connection",
+                "prefix": "plugin",
+                "type": "communicate",
+                "description": "Refresh your Connection to ADB Servers",
+                "tryInline": true,
+                "format": "Refresh Connection",
+                "data": [
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device_select",
+                    "type": "choice",
+                    "label": "Device Selection",
+                    "valueChoices":[]
+                }
+              ]
+            },
+
+            {
+              "id": "Gitago-ADB.TP.Plugins.device.installAPK",
+              "name": "ANDROID: Install APK",
+              "prefix": "plugin",
+              "type": "communicate",
+              "description": "",
+              "tryInline": true,
+              "format": "Install {$Gitago-ADB.TP.Plugins.device.installAPK.filename$} on {$Gitago-ADB.TP.Plugins.device_select$}",
+              "data": [
+                {
+                  "id": "Gitago-ADB.TP.Plugins.device_select",
+                  "type": "choice",
+                  "label": "Device Selection",
+                  "valueChoices":[]
+              },
+              {
+                "id": "Gitago-ADB.TP.Plugins.device.installAPK.filename",
+                "type": "file",
+                "label": "text",
+                "default": ""
+              }
+            ]
+          },
+
+          {
+            "id": "Gitago-ADB.TP.Plugins.device.uninstallAPK",
+            "name": "ANDROID: Uninstall APK",
+            "prefix": "plugin",
+            "type": "communicate",
+            "description": "Choose from List, or Set Custom APK Package Name to Remove",
+            "tryInline": true,
+            "format": "Uninstall {$Gitago-ADB.TP.Plugins.device.app_list$} (CUSTOM: {$Gitago-ADB.TP.Plugins.device.app_package_name_custom$} ) from {$Gitago-ADB.TP.Plugins.device_select$}",
+            "data": [
+              {
+                "id": "Gitago-ADB.TP.Plugins.device_select",
+                "type": "choice",
+                "label": "Device Selection",
+                "valueChoices":[]
+            },
+            {
+              "id": "Gitago-ADB.TP.Plugins.device.app_list",
+              "type": "choice",
+              "label": "Pick an App",
+              "default": "",
+              "valueChoices":[]
+            },
+            {
+              "id": "Gitago-ADB.TP.Plugins.device.app_package_name_custom",
+              "type": "text",
+              "label": "Custom APK Removal",
+              "default": ""
+            }
+          ]
+        },
+
+            {
+              "id": "Gitago-ADB.TP.Plugins.device.logcat",
+              "name": "ANDROID: Logcat Start / Stop",
+              "prefix": "plugin",
+              "type": "communicate",
+              "description": "Save your device Logcat to file",
+              "tryInline": true,
+              "format": "{$Gitago-ADB.TP.Plugins.device.logcat.startstop$} logging for {$Gitago-ADB.TP.Plugins.device_select$} and save to directory: {$Gitago-ADB.TP.Plugins.device.logcat_save_directory$} and filename: {$Gitago-ADB.TP.Plugins.device.logcat_save_filename$} ",
+              "data": [
+                {
+                  "id": "Gitago-ADB.TP.Plugins.device_select",
+                  "type": "choice",
+                  "label": "Device Selection",
+                  "valueChoices":[]
+                },
+                {
+                  "id": "Gitago-ADB.TP.Plugins.device.logcat.startstop",
+                  "type": "choice",
+                  "label": "Logcat Start Stop",
+                  "valueChoices":["Start", "Stop", "Clear"]
+                },
+                {
+                  "id": "Gitago-ADB.TP.Plugins.device.logcat_save_filename",
+                  "type": "file",
+                  "label": "text",
+                  "default": ""
+                }
+              ]
+            },
+
+              {
+                "id": "Gitago-ADB.TP.Plugins.device.remote_connect",
+                "name": "ANDROID: Remote Connection",
+                "prefix": "plugin",
+                "type": "communicate",
+                "description": "Setup Device for Wireless Connection - Use Device IP Address and Recommended Port (see docs for more info)",
+                "tryInline": true,
+                "format": "Remote Connect to {$Gitago-ADB.TP.Plugins.device_select$} -> {$Gitago-ADB.TP.Plugins.device_remote_connect.ip.choice$} Port: {$Gitago-ADB.TP.Plugins.device_remote_connect.port$} IF CUSTOM-> {$Gitago-ADB.TP.Plugins.device_remote_connect.ip$}",
+                "data": [
+                  {
+                    "id": "Gitago-ADB.TP.Plugins.device_select",
+                    "type": "choice",
+                    "label": "Device Selection",
+                    "valueChoices":[]
+                },
+                {
+                  "id": "Gitago-ADB.TP.Plugins.device_remote_connect.ip.choice",
+                  "type": "choice",
+                  "label": "ip choice",
+                  "default": "select a device first",
+                  "valueChoices":["Custom"]
+                },
+                {
+                    "id": "Gitago-ADB.TP.Plugins.device_remote_connect.ip",
+                    "type": "text",
+                    "label": "IP Select",
+                    "default": ""
+                },
+                {
+                    "id": "Gitago-ADB.TP.Plugins.device_remote_connect.port",
+                    "type": "text",
+                    "label": "Port Selection",
+                    "default": "5555"
+                }
+              ]
+            },
+            {
+              "id": "Gitago-ADB.TP.Plugins.device.key_input",
+              "name": "ANDROID: KEY_INPUT",
+              "prefix": "plugin",
+              "type": "communicate",
+              "description": "Use a Custom Key Input on your Device",
+              "tryInline": true,
+              "format": "Send Key Input {$Gitago-ADB.TP.Plugins.device.key_input.key$} to {$Gitago-ADB.TP.Plugins.device_select$}",
+              "data": [
+                {
+                  "id": "Gitago-ADB.TP.Plugins.device_select",
+                  "type": "choice",
+                  "label": "Device Selection",
+                  "valueChoices":[]
+              },
+              {
+                "id": "Gitago-ADB.TP.Plugins.device.key_input.key",
+                "type": "text",
+                "label": "Key Input",
+                "default": ""
+              }
+            ]
+           }
+            ],
+        "events": [
+            {
+              "id": "Gitago-ADB.TP.Plugins.events.default_outputdevice",
+              "name": "Future ADB Event",
+              "format": "When the Event Happens $val",
+              "type": "communicate",
+              "valueChoices": [
+                "True"
+              ],
+              "valueType": "choice",
+              "valueStateId": "Gitago-ADB.TP.Plugins.state.default_outputdevice"
+            }
+        ],
+        "states": [
+          {
+            "id": "Gitago-ADB.TP.Plugins.apk_installresults",
+            "type": "text",
+            "desc": "APK Install/Unstall Results",
+            "default": ""
+          },
+          {
+            "id":"Gitago-ADB.TP.Plugins.totaldevices",
+            "type":"text",
+            "desc":"Total Connected Devices",
+            "default":""
+        }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "name": "DEBUG MODE / LOGGING",
+        "type": "text",
+        "description": "Wish we could write descript here",
+        "default": "OFF",
+        "readOnly": false
+      }
+    ]
+  }
