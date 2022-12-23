@@ -1,6 +1,6 @@
 {
     "sdk": 6,
-    "version": 112,
+    "version": 113,
     "name": "Android ADB",
     "id": "Gitago-ADB",
     "configuration": {
