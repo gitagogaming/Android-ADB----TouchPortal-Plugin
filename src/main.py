@@ -179,6 +179,8 @@ def create_states():
         "value": bat_state_conver(choice='health',num=int(device['health'])),
         'parentGroup': device['Model']
         },
+        ## add "AC powered", "USB powered", "Wireless powered"
+        
         {
         "id": PLUGIN_ID + f'.device.{device["Model"]}.cpu_usage',
         "desc": f"{device['Model']} CPU Usage",
@@ -292,9 +294,8 @@ def state_loop_update():
         for x in device_list:
             device_states.get_cpu_usge(device_list[x]['ID'])
             device_states.get_mem_info(device_list[x]['ID'])
-            
             ## have not decided to loop for battery % yet.. until someone notices?? 
-          #  device_states.battery_state_update(device_list[x]['ID'])
+            device_states.battery_state_update(device_list[x]['ID'])
         create_states()
         time.sleep(5)
         

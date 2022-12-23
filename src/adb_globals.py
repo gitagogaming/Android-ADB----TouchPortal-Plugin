@@ -65,18 +65,24 @@ def bat_state_conver(choice, num):
 
 
 def match_device(name):
-    """ Returns the device ID associated with the device name"""
+    """ 
+    Returns the device ID associated with the device name
+    """
     return device_list[name]['ID']
 
 
 def kb2mb(num):
+    """
+    Converts KB to MB 
+    """
     return int(num) // 1024
 
 
 
 
 def out(command):
-    """Power Shell Func
+    """
+    Power Shell Func
     - Checking Devices Test
     """
     systemencoding = windll.kernel32.GetConsoleOutputCP()
