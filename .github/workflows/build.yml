@@ -29,7 +29,7 @@ jobs:
           
       - name: Build tpp using tppbuild
         run: |
-          python3 "./build.py"
+          python3 "./src/build.py"
           
           
 
