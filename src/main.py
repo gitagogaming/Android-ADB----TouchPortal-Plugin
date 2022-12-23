@@ -26,27 +26,36 @@ import logging
 ### resume playback = 126/127 
 ### move cursor to top/bottom list = 122/123
 
+
+
+## Getting current devie volume ? 
+
+#      output = match_device(data['data'][0]['value']).shell("""content query --uri content://settings/system --where 'name="volume_music"'""")
+#   #   output = get_volume()
+#      value = re.search(r"value=(\d+)", output).group(1)
+#      print(value)
+
 PLUGIN_ID = "Gitago-ADB.TP.Plugins"
 
 COMMANDS = {
     "Turn Off Screen": "input keyevent 223",
     "Turn On Screen": "input keyevent 224",
     "Toggle Power Menu": 'input keyevent KEYCODE_POWER', #"input keyevent 26",
-    "Toggle Device": 'input keyevent 2',
+    "Toggle Device On / Off": 'input keyevent 2',
     "Increase Volume": "input keyevent 24",
     "Decrease Volume": "input keyevent 25",
-    "Toggle Mute Volume": "input keyevent 164",
-    "Home Key": "input keyevent KEYCODE_HOME",             # "input keyevent 3",
-    "Return Key": "input keyevent 4",
-    "Menu": "input keyevent KEYCODE_MENU",                 #"input keyevent 82",
+    "Toggle Mute": "input keyevent 164",
+    "Home Button": "input keyevent KEYCODE_HOME",             # "input keyevent 3",
+    "Back Button": "input keyevent 4",
+    "Menu Button": "input keyevent KEYCODE_MENU",                 #"input keyevent 82",
     "Calendar": "input keyevent 208" ,
     "Reduce Screen Brightness": "input keyevent 220",
     "Increase Screen Brightness": "input keyevent 221",
     "Voice Assistant": "input keyevent 231",
     "Browser": 'input keyevent 64',
     "Contacts": "input keyevent 207",
-    "Open Call": 'input keyevent KEYCODE_CALL',
-    "End call": 'input keyevent KEYCODE_ENDCALL',
+    "Open Call Button": 'input keyevent KEYCODE_CALL',
+    "Close Call Button": 'input keyevent KEYCODE_ENDCALL',
     "Delete / Backspace": 'input keyevent KEYCODE_DEL',
     "Enter Button": "input keyevent KEYCODE_ENTER",
     "Reboot Device": "reboot",
@@ -77,7 +86,7 @@ def swipe_to_unlock(device, x1=None, x2=None, y1= None, y2=None):
     try:
         device.shell(f'input swipe {x1} {x2} {y1} {y2}')
     except:
-        print("error swiping")
+        g_log.error("error swiping")
 
 
 def format_temperature(device, aformat):
@@ -191,12 +200,12 @@ def create_states():
         {
         "id": PLUGIN_ID + f'.device.{device["Model"]}.screen_on',
         "desc": f"{device['Model']} Sleep State",
-        "value": "" if sleep == None else (str(sleep)),  #['mHoldingWakeLockSuspendBlocker'])).capitalize()
+        "value": "" if sleep == None else (str(sleep)),
         'parentGroup': device['Model']
         }
         ])
         count2 = count2+1
-    #print("states have been updated\n")
+
 
 
 
@@ -231,8 +240,16 @@ def get_current_app(device: object)-> str:
 
 
 
-""" This would be a mess if added now due to not
-being able to create states inside a category """
+
+
+""" 
+NOT IMPLEMENTED YET - 
+Now that ParentGroups are available we can add it! 
+
+
+//This would be a mess if added now due to not
+//being able to create states inside a category
+"""
 def most_recent_5(device: object)-> dict:
     """ 
     check the last 5 apps opened
@@ -303,18 +320,6 @@ def adjust_volume(device:object, volume:str, speaker:str)-> None:
             set_volume = int(volume) // 10
         device.shell(f'service call audio {SET_STREAM_VOLUME[android_version]} i32 {SPEAKER_CHOICES[speaker]} i32 {int(set_volume)} i32 1')
 
-       # print(device.shell(f'service call audio {SET_STREAM_VOLUME[android_version]} i32 {SPEAKER_CHOICES[speaker]} i32 {int(volume)} i32 1'))
-    time.sleep(0.10)
-    
-    ### USING AN OLD FOR LOOP...
-  #
-  # ### Finding Android Version for proper adjusting
-  # for x in device_list:
-  #     if device_list[x]['ID'] == device:
-  #         android_version = "Android "+ device_list[x]['Version']
-  #         if android_version in list(SET_STREAM_VOLUME.keys()):
-  #             print(device.shell(f'service call audio {SET_STREAM_VOLUME[android_version]} i32 {SPEAKER_CHOICES[speaker]} i32 {int(volume)} i32 1'))
-  #         
     time.sleep(0.10)
 
 
@@ -396,7 +401,7 @@ def get_app_list_choices():
             apps = device_list[x]['ID'].shell('pm list packages -3')
             applist = sort_app_list(apps)
     except:
-        print("mmmhmm.. error or list change")
+        g_log.error("Error or list change")
     try:
         TPClient.choiceUpdate(PLUGIN_ID + '.device.app_list', applist)
     except:
@@ -436,10 +441,10 @@ def build_dicts(devices):
             name.start()
             
     except RuntimeError as err:
-        print("[SNAG HIT] ->  A Device is Offline... We are Skipping it ")
+        g_log.error("[SNAG HIT] ->  A Device is Offline... We are Skipping it ")
+       # print("[SNAG HIT] ->  A Device is Offline... We are Skipping it ")
         print(err)
         
-   # print(device)
    
     return device_list
 
@@ -462,10 +467,9 @@ def check_for_logging(device:object, name:str)->None:
         
     if model in APPROVED_LIST:
         model = threading.Thread(target=log_thread_start, args=(name,device), daemon=True)
-        print("THIS IS MODEL", model)
         if not model.is_alive():
             model.start()
-            print("WE STARTED A THREAD for ", name)
+            g_log.debug(f"Starting Logging Thread for {name}")
             #print("* "*30+" LOGGING STARTED FOR"+model+" *"*30)
 
 
@@ -498,7 +502,7 @@ def dump_logcat_by_line_TOFILE(connect):
             pre_parse = (file_obj.readline().strip())
             logging.info(pre_parse)
     else:
-        print("Logging Stopped")
+        g_log.info("Logging Stopped")
         for handler in logging.root.handlers[:]:
             logging.root.removeHandler(handler)
             handler.close()
@@ -537,20 +541,21 @@ def dump_logcat_by_line(connect):
             #--------------------- Samsung SMA326U Parsing ----------------------------#
             #--------------------------------------------------------------------------#
             if "screen_off" in pre_parse:
-                print("SCREEN OFF")
+                g_log.info(f"SCREEN SWITCHED OFF")
             elif "screen_on" in pre_parse:
-                print("SCREEN ON")
+                g_log.info(f"SCREEN SWITCHED ON")
       
             if "START" in pre_parse:
                 if "SCREEN_OFF" in pre_parse:
-                    print("SCREEN SWITCHED OFF")
+                    g_log.info(f"SCREEN SWITCHED OFF")
                     
                 displayed_app = pre_parse.split("u0")[-1].split("cmp=")[-1].split("/")[0]
-                print(f"DISPLAYED: {displayed_app}")
+                
+                g_log.debug(f"DISPLAYED: {displayed_app}")
             if "Removing" in pre_parse:
                 ## maybe check if (appDied) in preparse? or 'activityDestroyed'?
                 killed_app = (pre_parse.split("u0")[-1].split("/")[0])
-                print("KILLED:", killed_app)
+                g_log.debug(f"KILLED: {killed_app}")
             
             
             
@@ -559,10 +564,11 @@ def dump_logcat_by_line(connect):
             #--------------------------------------------------------------------------#
             if "Killing" in pre_parse:
                 killed_app = pre_parse.split(":")[-2].split(" ")[0].split("/")[0]
-                print(f" THIS IS AMAZON - KILLED: {killed_app}")
+                g_log.debug(f"KILLED: {killed_app}")
+                
             elif "Displayed" in pre_parse:
                displayed_app = pre_parse.split(":")[-2].split(" ")[-1].split("/")[0]
-               print(f"DISPLAYED: {displayed_app}")
+               g_log.debug(f"DISPLAYED: {displayed_app}")
 
 
 #############################################################################     END OF LOGGGING THINGS     #####################################################################################################
@@ -598,9 +604,10 @@ def connect(remote_connect_new=False, ip=None, theport=None):
                          ### RFC = Device serial
     ### may need 'adb -s RFCRB1D7XFP tcpip 5555'  to restart the server, then do the normal connection.. probably kill-server first?
     if remote_connect_new:    #PORT 5555 RECOMMENDED
-        print('attempting a remote connection')
+        
+        g_log.info('attempting a remote connection')
         try:
-            print("Client disconnect?", client.remote_disconnect(ip, int(theport)))
+            g_log.info("Client disconnect?", client.remote_disconnect(ip, int(theport)))
            # print(client.features())
         except:
             pass
@@ -621,12 +628,11 @@ def connect(remote_connect_new=False, ip=None, theport=None):
                         notconnected=False
             
         except RuntimeError as err:
-            print(err)
+            g_log.error(err)
             print(out('adb start-server'))
             time.sleep(2)
             connect()
 
-            #print("yaah")
             
     build_dicts(devices)
     return new_connection
@@ -657,8 +663,9 @@ def plugin_update_check(data):
                 "id":"Download Update",
                 "title":f"Patch Notes\n{message}\n Click to Update!"
                 }])
-    except:
-        print("Something went wrong checking update")
+    except Exception as e:
+        g_log.error("Something went wrong checking update")
+     #   print("Something went wrong checking update")
         #pass
     
 
@@ -823,7 +830,7 @@ def heldingButton(data):
 #_________ ON CONNECTOR CHANGE  _________#
 @TPClient.on(TP.TYPES.onConnectorChange)
 def connectors(data):
-    print(data)
+    g_log.debug(f"Connector: {data}")
     if data['connectorId'] == PLUGIN_ID + ".VolumeMixer.connectors":
         adjust_volume(device=match_device(data['data'][0]['value']), volume=data['value'], speaker= data['data'][1]['value'])
     
@@ -835,53 +842,12 @@ def connectors(data):
 #_________________ ON ACTIONS _______________#
 @TPClient.on(TP.TYPES.onAction)
 def onAction(data):
-    print(data)
+    g_log.info(f"Action: {data}")
     if data['actionId'] == PLUGIN_ID + ".device_commands":
-        if data['data'][1]['value'] == "Browser":
-            match_device(data['data'][0]['value']).shell(COMMANDS['Browser'])
-        if data['data'][1]['value'] == "Contacts":
-            match_device(data['data'][0]['value']).shell(COMMANDS['Contacts'])
-        if data['data'][1]['value'] == "Open Call Button":
-            match_device(data['data'][0]['value']).shell(COMMANDS['Open Call'])
-        if data['data'][1]['value'] == "Close Call Button":
-            match_device(data['data'][0]['value']).shell(COMMANDS['End call']) # keyevent 6 turns off phone too?
-        if data['data'][1]['value'] == "Delete / Backspace":
-            match_device(data['data'][0]['value']).shell(COMMANDS['Delete / Backspace']) 
-        if data['data'][1]['value'] == "Back Button":
-            match_device(data['data'][0]['value']).shell(COMMANDS['Return Key'])
-            
-            
-        if data['data'][1]['value'] == "Home Button": 
-            output = match_device(data['data'][0]['value']).shell("""content query --uri content://settings/system""")
-            print(output)
+        ## all command choices should match the key in COMMANDS dict so no need for all the extra ifs anylonger
+        match_device(data['data'][0]['value']).shell(COMMANDS[data['data'][0]['value']])
 
-      #      output = match_device(data['data'][0]['value']).shell("""content query --uri content://settings/system --where 'name="volume_music"'""")
-      #   #   output = get_volume()
-      #      value = re.search(r"value=(\d+)", output).group(1)
-      #      print(value)
-      
-            match_device(data['data'][0]['value']).shell(COMMANDS['Home Key'])   
-            
-        if data['data'][1]['value'] == "Toggle Device On / Off":
-            match_device(data['data'][0]['value']).shell(COMMANDS['Toggle Device'])
-            
-        if data['data'][1]['value'] == "Toggle Power Menu":
-            match_device(data['data'][0]['value']).shell(COMMANDS['Toggle Power Menu'])
-            
-        if data['data'][1]['value'] == "Toggle Mute":
-            match_device(data['data'][0]['value']).shell(COMMANDS['Toggle Mute Volume'])
-        if data['data'][1]['value'] == "Voice Assistant":
-            match_device(data['data'][0]['value']).shell(COMMANDS['Voice Assistant'])
-        if data['data'][1]['value'] == "Calendar":
-            match_device(data['data'][0]['value']).shell(COMMANDS['Calendar'])        
-        if data['data'][1]['value'] == "Menu Button":
-            match_device(data['data'][0]['value']).shell(COMMANDS['Menu'])  ## keyevent 82 same thing
-        if data['data'][1]['value'] == "Enter Button":
-            match_device(data['data'][0]['value']).shell(COMMANDS['Enter Button']) 
-        if data['data'][1]['value'] == "Reboot Device":
-            match_device(data['data'][0]['value']).shell(COMMANDS['Reboot Device'])
-
-        
+    
     if data['actionId'] == PLUGIN_ID + ".device.open_application":
         if data['data'][2]['value'] == "Open":
             match_device(data['data'][0]['value']).shell(f"monkey -p {data['data'][1]['value']} -c android.intent.category.LAUNCHER 1")
@@ -972,7 +938,8 @@ def onAction(data):
 
 
     if data['actionId'] == PLUGIN_ID + ".device.installAPK":
-        print("Installing", data['data'][1]['value'], "on to", data['data'][0]['value'])
+        g_log.info("Installing", data['data'][1]['value'], "on to", data['data'][0]['value'])
+      #  print("Installing", data['data'][1]['value'], "on to", data['data'][0]['value'])
         TPClient.stateUpdate(PLUGIN_ID + '.apk_installresults', "INSTALL RUNNING")
         apk_install = install_apk(match_device(data['data'][0]['value']), data['data'][1]['value'])
         
@@ -983,7 +950,8 @@ def onAction(data):
         
         
     if data['actionId'] == PLUGIN_ID + ".device.uninstallAPK":
-        print("Uninstalling", data['data'][1]['value'], " from ", data['data'][0]['value'])
+        g_log.info("Uninstalling", data['data'][1]['value'], " from ", data['data'][0]['value'])
+     #   print("Uninstalling", data['data'][1]['value'], " from ", data['data'][0]['value'])
         TPClient.stateUpdate(PLUGIN_ID + '.apk_installresults', "UNINSTALL STARTED")
         
         """ If Custom is None, Then use the other field"""
@@ -1065,7 +1033,8 @@ def main():
                 g_log.addHandler(fh)
             except Exception as e:
                 opts.s = True
-                print(f"Error while creating file logger, falling back to stdout. {repr(e)}")
+                g_log.error(f"Error while creating file logger, falling back to stdout. {repr(e)}")
+             #   print(f"Error while creating file logger, falling back to stdout. {repr(e)}")
         if not opts.l or opts.s:
             sh = StreamHandler(sys.stdout)
             sh.setFormatter(fmt)

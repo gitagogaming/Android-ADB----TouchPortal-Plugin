@@ -45,7 +45,6 @@ def battery_state_update(device, format = "Celcius"):
         
     if changes > 0:
         print("---- {} changes".format(changes))
-       # print(battery_states)
         pass
     
     return battery_states
@@ -139,50 +138,6 @@ def get_mem_info(device):
     return memdict
 
 
-# get mem info old
-# get mem info olddef get_mem_info(device):
-# get mem info old    """ Returns Dictionary with Memory Details"""
-# get mem info old    memavail = 0
-# get mem info old    memfree = 0
-# get mem info old    memtotal = 0
-# get mem info old    
-# get mem info old    try:
-# get mem info old        mem_check = device.shell("cat /proc/meminfo")
-# get mem info old        split = mem_check.splitlines(-1)
-# get mem info old        memdict ={}
-# get mem info old        for line in split:
-# get mem info old            if 'MemTotal:' in line:
-# get mem info old                size = kb2mb(int(line.split(" ")[-2]))
-# get mem info old                memdict['MemTotal'] = f"{size}"
-# get mem info old                memtotal = memdict['MemTotal']
-# get mem info old                
-# get mem info old            if 'MemFree:' in line:
-# get mem info old                size = kb2mb(line.split(" ")[-2])
-# get mem info old                
-# get mem info old                memdict['MemFree'] = f"{size}"
-# get mem info old                memfree = memdict['MemFree']
-# get mem info old
-# get mem info old
-# get mem info old
-# get mem info old  
-# get mem info old        perce= int(memavail) / int(memtotal) * 100
-# get mem info old        memdict['Percentage']= round(perce)
-# get mem info old
-# get mem info old        for x in device_list:
-# get mem info old            if device_list[x]['ID'] == device:
-# get mem info old                device_list[x].update({'MemAvailable':memavail})
-# get mem info old                device_list[x].update({'MemFree':memfree})
-# get mem info old                device_list[x].update({'Percentage':perce})
-# get mem info old              #  print(f"{x} Dictionary Updated with Memory Usage")
-# get mem info old
-# get mem info old        return memdict
-# get mem info old    
-# get mem info old    except Exception as e:
-# get mem info old        print(f"Error Getting Memory Info: {e}")
-# get mem info old        return None
-
-
-
 
 
 """
@@ -190,50 +145,6 @@ def get_mem_info(device):
 ------------------- CPU USAGE -------------------
 -------------------------------------------------
 """
-
-## OLD WAY TO GET CPU USAGE with For loops..
-# def get_cpu_usge(device):
-#     """ 
-#     Get the CPU Usage of the Device(s) 
-#     - if cpuz doesnt calculate cpu then why should we???
-#     """
-#     
-#     build = {}
-#     thelist = {"cpu", "user", "nice", "sys", "idle"}
-#     ok = device.shell("top -n1")
-#     
-#     split = ok.splitlines(-1)
-#     complete = False
-#     for line in split:
-#         if not complete:
-#             if "cpu" in line:
-#                 newline = line.split(" ")
-#                 complete = True
-#                 for x in newline:
-#                     if x:
-#                         final_split = x.split("%")
-#                         if final_split[-1] in thelist:
-#                             build[final_split[-1]] = final_split[0]
-# 
-#                 result= int(build['user']) + int(build['sys'])
-#                 result = result / int(build['cpu'])
-#                 result=result*100
-#                 result = str(result)[0:2]
-#                 
-#                 if "." in result:
-#                     result = result.replace(".", "")
-# 
-#     """ Updating CPU Usage for Devices"""
-#     for x in device_list:
-#         if device_list[x]['ID'] == device:
-#             device_list[x].update({'CPU USAGE':result})
-#            # print(f"{x} Dictionary Updated with CPU Usage")
-#     print(ok)
-#     
-#     print("---------")
-#     return result
-
-
 
 def get_cpu_usge(device):
     """ 
