@@ -1,7 +1,6 @@
 """
 Gitago - TouchPortal Android ADB
 """
-__version__ = "1.0"
 
 from adb_globals import *
 import device_states
@@ -105,9 +104,9 @@ def create_states():
         temp_formatted = format_temperature(device, "Fahrenheit")
         
         cpu_usage = device.get('CPU USAGE')
-        memfree=""
-        first_math = (int(device['MemTotal']) / int(device['MemFree']))
-        memfree = first_math*10
+      # memfree=""
+      # first_math = (int(device['MemTotal']) / int(device['MemFree']))
+      # memfree = first_math*10
         
         
         TPClient.createStateMany([
@@ -184,9 +183,9 @@ def create_states():
         'parentGroup': device['Model']
         },
         {
-        "id": PLUGIN_ID + f'.device.{device["Model"]}.MemoryFree',
-        "desc": f"{device['Model']} Memory Free",
-        "value": str(round(memfree)),
+        "id": PLUGIN_ID + f'.device.{device["Model"]}.MemoryAvailable',
+        "desc": f"{device['Model']} Memory Available",
+        "value": device['MemAvailable'],
         'parentGroup': device['Model']
         },
         {
@@ -326,36 +325,44 @@ def adjust_brightness(device:object, level)-> None:
 
 
 """ Check Sleep State """
+
 def check_sleep(device:object):
-    try:
-       # ok=(device.shell('dumpsys power | grep "mHolding"'))
-       ### we could find out phone boot time here also.... so if phone has been on more than X hours they can reboot maybe?
-       
-        sleep_state =(device.shell("dumpsys nfc | grep 'mScreenState='"))
-        
-        if not sleep_state:
-            sleep_state = device.shell("dumpsys nfc | grep 'Screen State'")
-            sleep_state = sleep_state.split(":")[-1]
-        buf = StringIO(sleep_state)
-        changes = 0
-        
-        """ This was used when grep mHolding"""
-     ###  for line2 in buf.readlines():
-     ###      line = line2.strip()
-     ###      for state, value in sleep_states.items():
-     ###          m = re.search(r'{}=(.*)'.format(state), line)
-     ###          if m:
-     ###              if value != m.group(1):
-     ###                  changes += 1
-     ###                  # print("SLEEP STATE CHANGED: state={} old={} new={}".format(state, value, m.group(1)))
-     ###                  sleep_states[state] = m.group(1)
-     ###       if changes > 0:
-               #pass
-     ###          print("---- {} Sleepstate changes".format(changes))
-     ###       return sleep_states
-        return sleep_state
-    except RuntimeError as err:
-        print(" error on check_sleep... ", err)
+    #output = device.shell('dumpsys power | grep -e "mWakefulness=" -e "Display Power"')
+    output = device.shell('dumpsys power | grep -e "mWakefulness="')
+    output = output.split("=")[-1]
+    return output
+
+# def check_sleep2(device:object):
+#     try:
+#        # ok=(device.shell('dumpsys power | grep "mHolding"'))
+#        ### we could find out phone boot time here also.... so if phone has been on more than X hours they can reboot maybe?
+#        
+#         sleep_state =(device.shell("dumpsys nfc | grep 'mScreenState='"))
+#         print(sleep_state)
+#         if not sleep_state:
+#             
+#             sleep_state = device.shell("dumpsys nfc | grep 'Screen State'")
+#             sleep_state = sleep_state.split(":")[-1]
+#         buf = StringIO(sleep_state)
+#         changes = 0
+#         
+#         """ This was used when grep mHolding"""
+#      ###  for line2 in buf.readlines():
+#      ###      line = line2.strip()
+#      ###      for state, value in sleep_states.items():
+#      ###          m = re.search(r'{}=(.*)'.format(state), line)
+#      ###          if m:
+#      ###              if value != m.group(1):
+#      ###                  changes += 1
+#      ###                  # print("SLEEP STATE CHANGED: state={} old={} new={}".format(state, value, m.group(1)))
+#      ###                  sleep_states[state] = m.group(1)
+#      ###       if changes > 0:
+#                #pass
+#      ###          print("---- {} Sleepstate changes".format(changes))
+#      ###       return sleep_states
+#         return sleep_state
+#     except RuntimeError as err:
+#         print(" error on check_sleep... ", err)
         
 
 
