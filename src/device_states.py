@@ -17,6 +17,12 @@ def battery_state_update(device: object, format: str = "Celcius"):
         if ":" in line:
             key, value = line.split(":", 1)
             battery_info[key.strip()] = value.strip()
+    
+    
+    # Taking Battery Health/Status and Turning into "result"""
+    if "vendor.samsung.hardware" in battery_states['health']:
+        extract_health= (battery_states['health'].split("::")[0].replace("vendor.samsung.hardware.health@",""))
+        battery_states['health'] = str(round(float(extract_health)))
 
     battery_info['status'] = bat_state_conver(choice='status',num=int(battery_info['status']))
     return battery_info
